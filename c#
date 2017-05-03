@@ -1,0 +1,22 @@
+//dynamic
+
+
+
+public List<Components> MtdGetListByCompanyName(string strDataBaseName, ref string strMensajeError)
+    {
+        string strConnectionString = CParametros.ConnectionString(strDataBaseName, ref strMensajeError);
+
+        var objeto = new Components();
+
+        string SqlStatement = "SELECT * from [dbo].[Components] WHERE [IsHidden] = @IsHidden";
+
+        var parameterList = new List<CParameter>
+            {
+                new CParameter{key = "@IsHidden",value = false},
+            };
+
+        var lstObjects = GetList(SqlStatement, objeto, parameterList, strConnectionString, ref strMensajeError);
+        List<Components> lstEntities = lstObjects.Cast<Components>().ToList();
+
+        return lstEntities;
+    }

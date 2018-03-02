@@ -1,0 +1,173 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Principal.master.cs" Inherits="PresentacionWeb.Principal" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--link rel="shortcut icon" type="image/x-icon" href="App_Themes/img/crs.ico"/-->
+    <link id="cssNormalize" rel="stylesheet" type="text/css" href="~/UI/css/bootstrap.css" runat="server" />
+    <link id="Link1" rel="stylesheet" type="text/css" href="~/UI/css/Style.css" runat="server" />
+    <link id="Link2" rel="stylesheet" type="text/css" href="~/UI/css/loader.css" runat="server" />
+    <link id="Link3" rel="stylesheet" type="text/css" href="~/UI/css/FileUpload.css" runat="server" />
+    <link id="Link4" rel="stylesheet" type="text/css" href="~/UI/css/clockpicker.css" runat="server" />
+    <link id="Link5" rel="stylesheet" type="text/css" href="~/UI/css/bootstrap-datetimepicker.css" runat="server" />
+    <link href="~/UI/css/toastr.css" rel="stylesheet" />
+        
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    
+</head>
+    <script src="<%= ResolveUrl("~/UI/js/jquery.js")%>"></script>
+
+    <script src="<%= ResolveUrl("~/UI/js/bootstrap.js")%>"></script>
+    <script src="<%= ResolveUrl("~/UI/js/FileUpload.js")%>"></script>
+    <script src="<%= ResolveUrl("~/UI/js/clockpicker.js")%>"></script>
+    <script src="<%= ResolveUrl("~/UI/js/bootstrap-datetimepicker.js")%>"></script>
+    <script src="<%= ResolveUrl("~/UI/js/bootstrap-datetimepicker.es.js")%>"></script>
+    <script src="<%= ResolveUrl("~/UI/js/toastr.js")%>"></script>
+    <script src="<%= ResolveUrl("~/UI/js/scriptHelper.js")%>"></script>
+    <script>
+        
+    function CambiarSeleccion(id) {
+        var numeroPestañas = $('#<%= HidNumeroPestanas.ClientID %>').val();/* revisar*/
+        var nombrePestaña;
+        for (var index = 0; index < numeroPestañas; index++) {
+            if (id == "ChkPestana" + index) {
+                $("#ChkPestana" + index).prop('checked', true);
+                $('#<%= HidPestanaSeleccionada.ClientID %>').val($("#HidNombrePestana" + index).val());
+            } else {
+                $("#ChkPestana" + index).prop('checked', false);
+            }
+        }
+    }
+    function ValidarSeleccion() {
+        var numeroPestañas = $('#<%= HidNumeroPestanas.ClientID %>').val();/*revisar*/
+        for (var index = 0; index < numeroPestañas; index++) {
+            if ($('#ChkPestana' + index).is(':checked')) {
+                alert("Cargando información");
+                return true;
+            }
+        }
+
+        alert('Debe seleccionar una de las pestañas para proceder con la carga.');
+        return false;
+    }
+</script>
+
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="MasterAjaxScript" runat="server" AsyncPostBackTimeout="7200" EnablePageMethods="true">
+        </asp:ScriptManager>
+       
+        <input type="hidden" runat="server" id="HidNumeroPestanas" name="HidNumeroPestanas" />
+        <input type="hidden" runat="server" id="HidNombreArchivo" name="HidNombreArchivo" />
+        <input type="hidden" runat="server" id="HidRutaTemp" name="HidRutaTemp" />
+        <input type="hidden" runat="server" id="HidPestanaSeleccionada" name="HidPestanaSeleccionada" />
+        <div class="row">
+            <div class="container">
+                <div class="logo-banner col-md-6 col-sm-6 col-xs-6 logo-banner hidden-xs">
+                    <img class="logoCrsClic" src="<%= ResolveUrl("~/UI/img/images/logo_crsClic.png")%>" alt="" title="" />
+                    <br/>
+                    <h6 style="padding: 0;margin: 0">Afiliacion</h6>
+                </div>
+                
+                <div class="logo-banner col-md-6 col-sm-6 col-xs-6 logo-banner hidden-xs">
+                    <span class="pull-right">
+                        <img class="logo" src="<%= ResolveUrl("~/UI/img/images/logo_crediseguro.png")%>" alt="" title="" />
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container">
+
+                  <!-- Static navbar -->
+                  <%--<nav class="navbar navbar-default">--%>
+                    <div class="container-fluid">
+                      <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                          <span class="sr-only">Toggle navigation</span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                          <span class="icon-bar"></span>
+                        </button>
+                       <%-- <a class="navbar-brand" href="#">Project name</a>--%>
+                        <div class="logo-banner col-md-12 col-sm-12 col-xs-12 logo-banner visible-xs">
+                                <img class="logo" src="<%= ResolveUrl("~/UI/img/images/logo_crediseguro.png")%>" alt="" title="" />
+                        </div>
+                      </div>
+                      <div id="navbar" class="navbar-collapse collapse">
+                          
+                          <asp:Menu ID="NavigationMenu" runat="server" EnableViewState="True" IncludeStyleBlock="false" Orientation="Horizontal"
+                            StaticMenuStyle-CssClass="nav navbar-nav" StaticSelectedStyle-CssClass="active" DynamicMenuStyle-CssClass="dropdown-menu">
+                        </asp:Menu>
+                          
+                        <ul class="nav navbar-nav navbar-right">
+                          <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span class="fa fa-user-o"></span> 
+                                    <asp:Label ID="lblUsuarioSistema" runat="server" Text="User account not found"></asp:Label>
+                                <%--<span class="caret"></span>--%>
+                            </a>
+                            <ul class="dropdown-menu">
+                              <li><a href="#">Profile</a></li>
+                              <li role="separator" class="divider"></li>
+                              <li><a href="<%= ResolveUrl("~/Sitio/Vista/Login/Logout.aspx")%>">Logout</a></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </div><!--/.nav-collapse -->
+                    </div><!--/.container-fluid -->
+                  <%--</nav>--%>
+                </div>
+            </nav>
+
+            
+        </div>
+       
+        <asp:ContentPlaceHolder runat="server" ID="CphContenido"> </asp:ContentPlaceHolder>
+     <script type="text/javascript">
+         Sys.WebForms.Menu._elementObjectMapper.getMappedObject = function () {
+             return false;
+         };
+         $(function () {
+             //for dropdown menu
+             $(".dropdown-menu").parent().removeClass().addClass('dropdown');
+
+             $(".dropdown>a").removeClass().addClass('dropdown-toggle').append(' <b class="caret"></b> ').attr('data-toggle', 'dropdown');
+             //remove default click redirect effect           
+             $('.dropdown-toggle').attr('onclick', '').off('click');
+
+             //Remove the style attributes.
+             $(".navbar-nav li, .navbar-nav a, .navbar-nav ul").removeAttr('style');
+
+             //Apply the Bootstrap properties to the Submenu.
+             $(".dropdown-toggle").find("a").eq(0).attr("data-toggle", "dropdown").attr("aria-haspopup", "true").attr("aria-expanded", "false").append("<span class='caret'></span>");
+
+         });
+
+         $('.clockpicker').clockpicker()
+             .find('input').change(function () {
+                 console.log(this.value);
+             });
+         $('.form_date').datetimepicker({
+             language: 'es',
+             weekStart: 1,
+             todayBtn: 1,
+             autoclose: 1,
+             todayHighlight: 1,
+             startView: 2,
+             minView: 2,
+             forceParse: 0,
+             format: 'dd-mm-yyyy'
+         });
+
+        </script>
+    </form>
+
+</body>
+</html>
